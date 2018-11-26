@@ -19,10 +19,10 @@ public class Program {
 		((DirectoryObject)(root.getChildren().get(0))).getChildren().get(2))).addFile(new FileObject("File 6", "a new nation "));
 				
 		
-	    displayInfoStack(root);
+	    displayInfoQueue(root);
 		System.out.println("Total size: " + root.size() + "\n");
-		updateFilesStack(root);
-		displayInfoStack(root);
+		updateFilesQueue(root);
+		displayInfoQueue(root);
 		System.out.println("Total size: " + root.size() + "\n");
 	}
 
@@ -87,7 +87,6 @@ public class Program {
 	    {
 	    	DiskObject current = stack.top();
 	    	stack.pop();
-	    	
 	    	if(current instanceof DirectoryObject)
 	    	{   
 	    		StringBuilder fixed = new StringBuilder(current.getName());
@@ -97,7 +96,6 @@ public class Program {
 		    	for (int a = aldo.size()-1; a >= 0; a--)
 	            {
 		    		 stack.push(aldo.get(a));
-		    		 
 		    	}
 		    }
 	    	else if (current instanceof FileObject)
@@ -106,9 +104,8 @@ public class Program {
 						((FileObject) current).getData().substring(0, Math.min(((FileObject) current).getData().length(), 25)));
 	    	}
 	    }
-		
 	}
-	//see if good
+	
 	public static void displayInfoQueue(DirectoryObject dO) {
 		ArrayLQueue<DiskObject> queue = new ArrayLQueue<DiskObject>();
 		queue.enqueue(dO);
@@ -124,7 +121,7 @@ public class Program {
 			    	 for (int a =  0; a < aldo.size(); a++)
 		             {
 			    		 queue.enqueue(aldo.get(a));
-			    	 }
+		             }
 		    	}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -133,7 +130,34 @@ public class Program {
 	}
 	
 	public static void updateFilesQueue(DirectoryObject dO) {
-		
-		
+		ArrayLQueue<DiskObject> queue = new ArrayLQueue<DiskObject>();	
+	    queue.enqueue(dO);
+	    while (!queue.isEmpty())
+	    {
+	    	DiskObject current;
+			try {
+				current = queue.dequeue();
+			
+		    	if(current instanceof DirectoryObject)
+		    	{   
+		    		StringBuilder fixed = new StringBuilder(current.getName());
+					fixed.insert(0, "Fixed- ");
+					current.setName(fixed.toString());
+		    		ArrayList<DiskObject> aldo  = ((DirectoryObject) current).getChildren();
+			    	for (int a = 0; a<aldo.size(); a++)
+		            {
+			    		queue.enqueue(aldo.get(a));
+			    	}
+			    }
+		    	else if (current instanceof FileObject)
+		    	{
+		    		((FileObject) current).setData(
+							((FileObject) current).getData().substring(0, Math.min(((FileObject) current).getData().length(), 25)));
+		    	}
+		    
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
