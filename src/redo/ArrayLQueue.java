@@ -18,7 +18,6 @@ public class ArrayLQueue<T>
 		return val;
 	}
 
-	
 	public boolean isEmpty()
 	{
 		return al.size() == 0;
@@ -27,5 +26,9 @@ public class ArrayLQueue<T>
 	public void enqueue(T data) 
 	{
 			al.add(data);
+	}
+	
+	public ArrayList<T> getList() {
+		return al;
 	}
 }

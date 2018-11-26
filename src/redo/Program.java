@@ -113,16 +113,18 @@ public class Program {
 		{
 			try 
 			{
-				DiskObject current = queue.dequeue();
-			    System.out.println(current.toString()); 
+				DiskObject current; 
+				current = queue.getList().get(0);
+				System.out.println(current.toString()); 
 				if(current instanceof DirectoryObject)
 		    	{
 		    		 ArrayList<DiskObject> aldo  = ((DirectoryObject) current).getChildren();
-			    	 for (int a =  0; a < aldo.size(); a++)
+			    	 for (int a = 0; a < aldo.size(); a++)
 		             {
 			    		 queue.enqueue(aldo.get(a));
 		             }
 		    	}
+			 queue.dequeue();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
