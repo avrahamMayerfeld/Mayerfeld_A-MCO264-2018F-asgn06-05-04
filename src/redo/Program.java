@@ -1,6 +1,12 @@
 package redo;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Stack;
+
 
 public class Program {
 	public static void main(String[] args) {
@@ -19,10 +25,10 @@ public class Program {
 		((DirectoryObject)(root.getChildren().get(0))).getChildren().get(2))).addFile(new FileObject("File 6", "a new nation "));
 				
 		
-	    displayInfoQueue(root);
+	    displayInfoStack(root);
 		System.out.println("Total size: " + root.size() + "\n");
-		updateFilesQueue(root);
-		displayInfoQueue(root);
+		updateFilesStack(root);
+		displayInfoStack(root);
 		System.out.println("Total size: " + root.size() + "\n");
 	}
 
@@ -62,12 +68,12 @@ public class Program {
 	
 	public static void displayInfoStack(DirectoryObject dO) {
 		
-		ArrayLStack<DiskObject> stack = new ArrayLStack<DiskObject>();	
+		Stack<DiskObject> stack = new Stack<DiskObject>();	
 	    stack.push(dO);
 	    while (!stack.isEmpty())
 	    {
-	    	DiskObject current = stack.top();
-	    	stack.pop();
+	    	DiskObject current = stack.pop();
+	    	
 	    	System.out.println(current.toString()); 
 	    	if(current instanceof DirectoryObject)
 	    	{
@@ -81,12 +87,12 @@ public class Program {
 	
 	public static void updateFilesStack(DirectoryObject dO) {
 		
-		ArrayLStack<DiskObject> stack = new ArrayLStack<DiskObject>();	
+		Stack<DiskObject> stack = new Stack<DiskObject>();	
 	    stack.push(dO);
 	    while (!stack.isEmpty())
 	    {
-	    	DiskObject current = stack.top();
-	    	stack.pop();
+	    	DiskObject current = stack.pop();
+	    	
 	    	if(current instanceof DirectoryObject)
 	    	{   
 	    		StringBuilder fixed = new StringBuilder(current.getName());
@@ -107,24 +113,24 @@ public class Program {
 	}
 	
 	public static void displayInfoQueue(DirectoryObject dO) {
-		ArrayLQueue<DiskObject> queue = new ArrayLQueue<DiskObject>();
-		queue.enqueue(dO);
+		Queue<DiskObject> queue = new LinkedList<DiskObject>();
+		queue.add(dO);
 		while(!queue.isEmpty())
 		{
 			try 
 			{
 				DiskObject current; 
-				current = queue.getList().get(0);
+				current = queue.peek();
 				System.out.println(current.toString()); 
 				if(current instanceof DirectoryObject)
 		    	{
 		    		 ArrayList<DiskObject> aldo  = ((DirectoryObject) current).getChildren();
 			    	 for (int a = 0; a < aldo.size(); a++)
 		             {
-			    		 queue.enqueue(aldo.get(a));
+			    		 queue.add(aldo.get(a));
 		             }
 		    	}
-			 queue.dequeue();
+			 queue.remove();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -132,13 +138,13 @@ public class Program {
 	}
 	
 	public static void updateFilesQueue(DirectoryObject dO) {
-		ArrayLQueue<DiskObject> queue = new ArrayLQueue<DiskObject>();	
-	    queue.enqueue(dO);
+		Queue<DiskObject> queue = new LinkedList<DiskObject>();	
+	    queue.add(dO);
 	    while (!queue.isEmpty())
 	    {
 	    	DiskObject current;
 			try {
-				current = queue.dequeue();
+				current = queue.remove();
 			
 		    	if(current instanceof DirectoryObject)
 		    	{   
@@ -148,7 +154,7 @@ public class Program {
 		    		ArrayList<DiskObject> aldo  = ((DirectoryObject) current).getChildren();
 			    	for (int a = 0; a<aldo.size(); a++)
 		            {
-			    		queue.enqueue(aldo.get(a));
+			    		queue.add(aldo.get(a));
 			    	}
 			    }
 		    	else if (current instanceof FileObject)
@@ -161,5 +167,11 @@ public class Program {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public static void UpdateFilesPriorityQueue(DiskObject dO){
+		DiskComparator dc = new DiskComparator();
+		PriorityQueue<DiskObject> q = new PriorityQueue<DiskObject>(8,dc);
+	
 	}
 }
