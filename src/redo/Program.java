@@ -2,7 +2,11 @@ package redo;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Stack;
@@ -27,9 +31,10 @@ public class Program {
 		
 	    displayInfoStack(root);
 		System.out.println("Total size: " + root.size() + "\n");
-		updateFilesStack(root);
-		displayInfoStack(root);
+		updateFilesPriorityQueue(root);
+		
 		System.out.println("Total size: " + root.size() + "\n");
+		
 	}
 
 	public static void displayInfoRecursive(DirectoryObject dO) 
@@ -169,9 +174,50 @@ public class Program {
 		}
 	}
 	
-	public static void UpdateFilesPriorityQueue(DiskObject dO){
+	public static void updateFilesPriorityQueue(DiskObject dO){
+		Map<DiskObject,Date> map = new LinkedHashMap<DiskObject,Date>();
 		DiskComparator dc = new DiskComparator();
-		PriorityQueue<DiskObject> q = new PriorityQueue<DiskObject>(8,dc);
-	
+		
+		PriorityQueue<DiskObject> queue = new PriorityQueue<DiskObject>(8,dc);
+		queue.add(dO);
+		DiskObject current;
+	    while(!queue.isEmpty())
+	    {
+	    	
+			try {
+				current = queue.poll();
+			
+		    	if(current instanceof DirectoryObject)
+		    	{   
+		    		StringBuilder fixed = new StringBuilder(current.getName());
+					fixed.insert(0, "Fixed- ");
+					current.setName(fixed.toString());
+		    		ArrayList<DiskObject> aldo  = ((DirectoryObject) current).getChildren();
+			    	for (int a = 0; a<aldo.size(); a++)
+		            {
+			    		queue.add(aldo.get(a));
+			    	}
+			    }
+		    	else if (current instanceof FileObject)
+		    	{
+		    		
+		    		((FileObject) current).setData(
+							((FileObject) current).getData().substring(0, Math.min(((FileObject) current).getData().length(), 25)));
+		    		
+		    	}
+		    	
+		    	map.put(current,current.getLastAccessed());//really should be getLastModified, but that method was written according to 
+		    	//specifications which don't work for fixing objects within the directory, and also in this assignment with the fixing out of 
+		    	//order it would not be appropriate.
+		
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	 
+	                                         
+	    for(Entry<DiskObject,Date> entry:map.entrySet()) {
+	    	System.out.println(entry.getKey()+"                         "+entry.getValue());
+	    }
 	}
 }
