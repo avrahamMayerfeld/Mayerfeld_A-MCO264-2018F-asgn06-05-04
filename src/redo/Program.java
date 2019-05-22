@@ -29,7 +29,7 @@ public class Program {
 		((DirectoryObject)(root.getChildren().get(0))).getChildren().get(2))).addFile(new FileObject("File 6", "a new nation "));
 				
 		
-	    displayInfoStack(root);
+	    	displayInfoStack(root);
 		System.out.println("Total size: " + root.size() + "\n");
 		updateFilesPriorityQueue(root);
 		
@@ -74,47 +74,47 @@ public class Program {
 	public static void displayInfoStack(DirectoryObject dO) {
 		
 		Stack<DiskObject> stack = new Stack<DiskObject>();	
-	    stack.push(dO);
-	    while (!stack.isEmpty())
-	    {
-	    	DiskObject current = stack.pop();
-	    	
-	    	System.out.println(current.toString()); 
-	    	if(current instanceof DirectoryObject)
-	    	{
-		    	for (int a =  ((DirectoryObject) current).getChildren().size()-1; a >= 0; a--)
-	            {
-		    		 stack.push(((DirectoryObject) current).getChildren().get(a));
-		    	}
-	    	}
-	    }
+	    	stack.push(dO);
+	    	while (!stack.isEmpty())
+		{
+			DiskObject current = stack.pop();
+
+			System.out.println(current.toString()); 
+			if(current instanceof DirectoryObject)
+			{
+				for (int a =  ((DirectoryObject) current).getChildren().size()-1; a >= 0; a--)
+			    	{
+					 stack.push(((DirectoryObject) current).getChildren().get(a));
+				}
+			}
+		}
 	}               
 	
 	public static void updateFilesStack(DirectoryObject dO) {
 		
-		Stack<DiskObject> stack = new Stack<DiskObject>();	
-	    stack.push(dO);
-	    while (!stack.isEmpty())
-	    {
-	    	DiskObject current = stack.pop();
-	    	
-	    	if(current instanceof DirectoryObject)
-	    	{   
-	    		StringBuilder fixed = new StringBuilder(current.getName());
+		    Stack<DiskObject> stack = new Stack<DiskObject>();	
+		    stack.push(dO);
+		    while (!stack.isEmpty())
+		    {
+			DiskObject current = stack.pop();
+
+			if(current instanceof DirectoryObject)
+			{   
+				StringBuilder fixed = new StringBuilder(current.getName());
 				fixed.insert(0, "Fixed- ");
 				current.setName(fixed.toString());
-	    		ArrayList<DiskObject> aldo  = ((DirectoryObject) current).getChildren();
-		    	for (int a = aldo.size()-1; a >= 0; a--)
-	            {
-		    		 stack.push(aldo.get(a));
-		    	}
+				ArrayList<DiskObject> aldo  = ((DirectoryObject) current).getChildren();
+				for (int a = aldo.size()-1; a >= 0; a--)
+			    	{
+					stack.push(aldo.get(a));
+				}
+			}
+			else if (current instanceof FileObject)
+			{
+				((FileObject) current).setData(
+							((FileObject) current).getData().substring(0, Math.min(((FileObject) current).getData().length(), 25)));
+			}
 		    }
-	    	else if (current instanceof FileObject)
-	    	{
-	    		((FileObject) current).setData(
-						((FileObject) current).getData().substring(0, Math.min(((FileObject) current).getData().length(), 25)));
-	    	}
-	    }
 	}
 	
 	public static void displayInfoQueue(DirectoryObject dO) {
@@ -128,14 +128,14 @@ public class Program {
 				current = queue.peek();
 				System.out.println(current.toString()); 
 				if(current instanceof DirectoryObject)
-		    	{
-		    		 ArrayList<DiskObject> aldo  = ((DirectoryObject) current).getChildren();
-			    	 for (int a = 0; a < aldo.size(); a++)
-		             {
-			    		 queue.add(aldo.get(a));
-		             }
-		    	}
-			 queue.remove();
+		    		{
+		    		 	ArrayList<DiskObject> aldo  = ((DirectoryObject) current).getChildren();
+			    	 	for (int a = 0; a < aldo.size(); a++)
+		            		{
+			    			queue.add(aldo.get(a));
+		             		}
+		    		}
+			 	queue.remove();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -144,29 +144,29 @@ public class Program {
 	
 	public static void updateFilesQueue(DirectoryObject dO) {
 		Queue<DiskObject> queue = new LinkedList<DiskObject>();	
-	    queue.add(dO);
-	    while (!queue.isEmpty())
-	    {
-	    	DiskObject current;
+	    	queue.add(dO);
+	    	while (!queue.isEmpty())
+	    	{
+	    		DiskObject current;
 			try {
 				current = queue.remove();
 			
-		    	if(current instanceof DirectoryObject)
-		    	{   
-		    		StringBuilder fixed = new StringBuilder(current.getName());
+				if(current instanceof DirectoryObject)
+				{   
+					StringBuilder fixed = new StringBuilder(current.getName());
 					fixed.insert(0, "Fixed- ");
 					current.setName(fixed.toString());
-		    		ArrayList<DiskObject> aldo  = ((DirectoryObject) current).getChildren();
-			    	for (int a = 0; a<aldo.size(); a++)
-		            {
-			    		queue.add(aldo.get(a));
-			    	}
-			    }
-		    	else if (current instanceof FileObject)
-		    	{
-		    		((FileObject) current).setData(
-							((FileObject) current).getData().substring(0, Math.min(((FileObject) current).getData().length(), 25)));
-		    	}
+					ArrayList<DiskObject> aldo  = ((DirectoryObject) current).getChildren();
+					for (int a = 0; a<aldo.size(); a++)
+				    	{
+						queue.add(aldo.get(a));
+					}
+				}
+				else if (current instanceof FileObject)
+				{
+					((FileObject) current).setData(
+								((FileObject) current).getData().substring(0, Math.min(((FileObject) current).getData().length(), 25)));
+				}
 		    
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -181,34 +181,34 @@ public class Program {
 		PriorityQueue<DiskObject> queue = new PriorityQueue<DiskObject>(8,dc);
 		queue.add(dO);
 		DiskObject current;
-	    while(!queue.isEmpty())
-	    {
+	    	while(!queue.isEmpty())
+	    	{
 	    	
 			try {
 				current = queue.poll();
 			
-		    	if(current instanceof DirectoryObject)
-		    	{   
-		    		StringBuilder fixed = new StringBuilder(current.getName());
+		    		if(current instanceof DirectoryObject)
+		    		{   
+		    			StringBuilder fixed = new StringBuilder(current.getName());
 					fixed.insert(0, "Fixed- ");
 					current.setName(fixed.toString());
-		    		ArrayList<DiskObject> aldo  = ((DirectoryObject) current).getChildren();
-			    	for (int a = 0; a<aldo.size(); a++)
-		            {
-			    		queue.add(aldo.get(a));
+		    			ArrayList<DiskObject> aldo  = ((DirectoryObject) current).getChildren();
+			    		for (int a = 0; a<aldo.size(); a++)
+		            		{
+			    			queue.add(aldo.get(a));
+			    		}
 			    	}
-			    }
-		    	else if (current instanceof FileObject)
-		    	{
+		    		else if (current instanceof FileObject)
+		    		{
 		    		
 		    		((FileObject) current).setData(
 							((FileObject) current).getData().substring(0, Math.min(((FileObject) current).getData().length(), 25)));
 		    		
-		    	}
+		    		}
 		    	
-		    	map.put(current,current.getLastAccessed());//really should be getLastModified, but that method was written according to 
-		    	//specifications which don't work for fixing objects within the directory, and also in this assignment with the fixing out of 
-		    	//order it would not be appropriate.
+		    		map.put(current,current.getLastAccessed());//really should be getLastModified, but that method was written according to 
+		    		//specifications which don't work for fixing objects within the directory, and also in this assignment with the fixing out of 
+		    		//order it would not be appropriate.
 		
 			} catch (Exception e) {
 				e.printStackTrace();
