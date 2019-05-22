@@ -41,7 +41,7 @@ public class DirectoryObject extends DiskObject {
 	public ArrayList<DiskObject> getChildren() {
 		
 		lastAccessed = currDate;
-	    return children;
+	    	return children;
 	}
 	
 			
